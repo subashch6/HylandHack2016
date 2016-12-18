@@ -25,6 +25,14 @@ app.get('/externaljs.js', function(req,res)
 	console.log("using external JS File");
 });
 
+app.get('/index.css', function(req,res)
+{
+	res.sendFile(__dirname + '/index.css');
+	console.log("using external css file");
+});
+
+
+app.get('')
 
 io.on('connect', function(socket)
 {
@@ -32,22 +40,33 @@ io.on('connect', function(socket)
 
 	socket.on('QuerySent',function(jquery)
 	{
-		var command = 'python2 TestSendSubash.py What_The_Phuoc \"' +  jquery['query'] + '\"';
+		var command = 'python2 TestSendSubash.py '+ ' "' + jquery['query'][0] + '"' + ' "'  +  jquery['query'][1] + '" ';
 		console.log(command);
-		//children.execSync(command);
+		
+	  ///////////////////////////////
+      	children.execSync(command);//
+	  ///////////////////////////////
 
 		var json = fs.readFileSync("aggregate_data.json");
 		var jsonObj = JSON.parse(json);
 		var string = JSON.stringify(jsonObj);
 		
-
-       	var columnData = {
-		   columns:[ ['Data',60,30,20,80] ]
-		}
-
+		
 		socket.emit('QueryReceived', jsonObj);
 		console.log("Return data  = " + string);
 	});
+
+
+	socket.on('receiveRaw',function()
+			{
+				console.log("recieved raw ask");
+				var raw = fs.readFileSync("raw_all_tweets.json");
+				var rawObj = JSON.parse(raw);
+				var rawstr = JSON.stringify(rawObj);
+				console.log(rawstr);
+				
+				socket.emit('rawSend', rawObj);
+			});
 });
 
 

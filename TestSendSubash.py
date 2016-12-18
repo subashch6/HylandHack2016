@@ -46,8 +46,8 @@ keyword_tweet_list = tweet_list[0]
 all_tweet_list = tweet_list[1]
 
 # TODO set limit on number of runs here
-keyword_tweet_list = keyword_tweet_list[:10]
-all_tweet_list = all_tweet_list[:10]
+keyword_tweet_list = keyword_tweet_list#[:10]
+all_tweet_list = all_tweet_list[:50]#[:10]
 
 # Test IndicoAllFollowerTweet
 all_follower_tweet_objects = []

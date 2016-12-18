@@ -1,62 +1,98 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
+  <head lang="en">
     <title>Hyland Hackathon</title>
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
 	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="index.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script> 
 	<script src="externaljs.js"></script>
   </head>
-  <style>
-	#messages
-	{ text-align: center;
-		top: 50%;
-		left: 50%;
-		padding: 50px;
-	}
-
-	#input
-	{
-		width: 50%;
-		padding: 10px;
-	}
-	.graphs
-	{
-		width: 50%;
-		left: 25%;
-		padding: 0px;
-	}
-  </style>
   <body>
-	<div id="messages">
-      <input id="input" autocomplete="off" />
-	  <input id="send" type="button"  value="Query!"/> 
+	<div class="container">
+		<div class="page-header">
+			<div class="row">
+				<div class="col-lg-12"> 
+					<h1 id="topHead">TweetBeat</h1>
+					<p><i>A free (though easy) tweet and message analyzer.</i></p>
+				</div>
+			</div>
+		</div>
 	</div>
-	<div id="chart1" class="graphs"></div>
-	<div id="chart2" class="graphs"></div>
-	<div id="chart3" class="graphs"></div>
+	<div class="container">
+		<div class="jumbotron" id="query">
+			<h1 id="explainText">A powerful yet simple tweet analyser</h1>
+			<br>
+			<br>
+			<p>
+				<input id="input2" autocomplete="off" placeholder="@handle" />
+			</p>
+			<p>
+			<textarea id="input" autocomplete="off" placeholder="Tweet..." type="text" /></textarea>
+			</p>
+			<p>
+				<input id="send" type="button"  value="Go!" class="btn btn-large"/> 
+			</p>
+		</div >
+	</div>
+
+	<div class="container">
+		<div class="row marketing">
+      		<div class="col-lg-6">
+       	 		<h1>Smart Data Sourcing</h1>
+       			 <h4>TweetBeat looks at your own followers to provide more relevant feedback</h4>
+
+        		<h1>Advanced Searching Tools</h1>
+        		<h4>Using keyword detection and relevance scoring, TweetBeat uses the best tweets to provide metrics</h4>
+
+        		<h1>Political Affiliation</h1>
+        		<h4>Analyzing tweets from your network for political bias, TweetBeat offers insight into the partisanship of your follower base</h4>
+      		</div>
+
+      		<div class="col-lg-6">
+        		<h1>Sentiment Analysis</h1>
+        		<h4>TweetBeat uses examples from thousands of databases to determine the sentiment of your tweets.</h4>
+
+        		<h1>Twitter Engagement</h1>
+        		<h4>Analyzing past performance and keyword engagement, TweetBeat scores your tweets for their ability to engage your audience</h4>
+
+        		<h1>Personality</h1>
+        		<h4>By subjecting your tweets to tests based of the Myers-Briggs personality index, TweetBeat filters your followers based on their personality types</h4>
+      		</div>
+    	</div>
+	</div>
+	<div class="container" id="graphset">
+			<div id="chart1" class="graphs"></div>
+			<div id="chart4" class="grpahs"></div>
+			<div id="chart2" class="graphs"></div>
+			<div id="chart3" class="graphs"></div>
+	</div>
 
 	<script>
 
 	var socket = io();
-    	
-	var chart1 = c3.generate({
-				bindto: '#chart1',
-				data: {
-					columns: [[]],
-					type: 'bar'
-					},
-				axis: {
-					x: {
-						type: 'category',
-						categories: ['Libertarian','Green','Liberal','Conservative']
-					}
-				}
+    
+	
+	var gauge = c3.generate({
+		bindto: '#chart1',
+			data: {
+				columns: [[]],
+				type: 'gauge'	
+				
+			},
+			color: {
+				pattern: ['#09b561']
+			}
 		});
 
-	var chart2 = c3.generate({
+	
+	var chart1 = c3.generate({
 				bindto: '#chart2',
 				data: {
 					columns: [[]],
@@ -65,23 +101,52 @@
 				axis: {
 					x: {
 						type: 'category',
+						categories: ['Libertarian','Green','Liberal','Conservative']
+					},
+					y: {show: false}
+				},
+				legend:{position: 'inset'}
+		});
+
+	var chart2 = c3.generate({
+				bindto: '#chart3',
+				data: {
+					columns: [[]],
+					type: 'bar'
+					},
+				axis: {
+					x: {
+						type: 'category',
 						categories: ['Extraversion','Openness','Agreeableness','Conscientiousness']
-					}
-				}
+					},
+					y: {show: false}
+				},
+				legend:{position: 'inset'}
 		});
 
 	var donut = c3.generate({
-		bindto: '#chart3',
+		bindto: '#chart4',
 			data: {
 				columns: [[]],
 				type: 'donut'
-			}
+			},
 		});
+
+
+
+	function scrollDown()
+	{
+		$('html, body').animate({
+        	scrollTop: $("#chart2").offset().top
+    		}, 2000);
+	}
 
 
 
 	$('#send').click(function()
 			{
+				scrollDown();
+				gauge.unload();
 				chart1.unload();
 				chart2.unload();
 				donut.unload();
@@ -93,6 +158,20 @@
 				   {
 				   		if(e.keyCode == 13)
 						{
+							scrollDown();
+							gauge.unload();
+							chart1.unload();
+							chart2.unload();
+							donut.unload();
+							sendQueryEmit();
+						}
+				   });
+	$('#input2').keypress(function(e)
+				   {
+				   		if(e.keyCode == 13)
+						{
+							scrollDown();
+							gauge.unload();
 							chart1.unload();
 							chart2.unload();
 							donut.unload();
@@ -100,18 +179,25 @@
 						}
 				   });
 
+
+	var gaugeValue = null;
 	var polValues = null;
 	var perValues = null;
 	var emoValues = null;
 
 	socket.on('QueryReceived', function(ret) {
 		
-		alert(JSON.stringify(ret));
 		setAggregate(ret);
 		
+		gaugeValue = processEngagement();
 		polValues = processPolitical();
 		perValues = processPersonality();
 		emoValues = processEmotion();
+		
+		setTimeout(function(){
+			gauge.load({columns : [gaugeValue]});
+		},1000);
+
 		setTimeout(function(){
 			chart1.load({columns : [polValues[0]]});
 		},500);
@@ -122,11 +208,11 @@
 		
 		setTimeout(function(){
 			chart2.load({columns : [perValues[0]]});
-		},1500);
+		},500);
 		
 		setTimeout(function(){
 			chart2.load({columns : [perValues[1]]});
-		},2000);
+		},1000);
 
 		setTimeout(function(){
 			donut.load({columns : [emoValues[0]]});
@@ -134,19 +220,19 @@
 
 		setTimeout(function(){
 			donut.load({columns : [emoValues[1]]});
-		},1000 );
+		},500 );
 
 		setTimeout(function(){
 			donut.load({columns : [emoValues[2]]});
-		},1500 );
+		},1000 );
 
 		setTimeout(function(){
 			donut.load({columns : [emoValues[3]]});
-		},2000 );
+		},1500 );
 
 		setTimeout(function(){
 			donut.load({columns : [emoValues[4]]});
-		},2500 );
+		},2000 );
 
 	});
 		

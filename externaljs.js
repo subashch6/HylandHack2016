@@ -16,9 +16,10 @@ function generateGraph(data, type, bindDiv)
 function sendQueryEmit()
 {
 	var val = document.getElementById('input').value;
-	socket.emit('QuerySent', {'query':val});
+	val = val.trim();
+	var val2 = document.getElementById('input2').value;
+	socket.emit('QuerySent', {'query':[val2,val]});
 	
-	//document.getElementById('input').value = '';
 }
 
 
@@ -32,8 +33,8 @@ function processPolitical()
 {
 	aggregate_pol = jsonObj_Agg.org_tweet[0].aggregate_political_scores;
 	pol = jsonObj_Agg.org_tweet[0].political_scores;
-	aggregate_pol.unshift('Aggregate political scores');
-	pol.unshift('Political scores');
+	aggregate_pol.unshift('Followers Political');
+	pol.unshift('Tweet Political');
 	pol_json = [pol, aggregate_pol];
 	return pol_json;
 }
@@ -43,8 +44,8 @@ function processPersonality()
 {
 	aggregate_per = jsonObj_Agg.org_tweet[0].aggregate_personality_scores;
 	per  = jsonObj_Agg.org_tweet[0].personality_scores;
-	aggregate_per.unshift('Aggregate personality scores');
-	per.unshift('Personality scores');
+	aggregate_per.unshift('Followers Personality');
+	per.unshift('Tweet Personality');
 	per_json = [per, aggregate_per];
 	return per_json;
 }
@@ -62,7 +63,13 @@ function processEmotion()
 	return values;
 }
 
-
+function processEngagement()
+{
+	val = jsonObj_Agg.org_tweet[0].twitter_engagement;
+	val *= 100;
+	val2 = ['Twitter Engagement', val];
+	return val2;
+}
 
 
 
