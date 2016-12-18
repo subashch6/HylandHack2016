@@ -1,0 +1,125 @@
+
+#topHead
+{
+	color: #558c89;
+	font-size: 60px;
+	font-weight: bold;
+}
+
+#explainText
+{
+	font-size: 100px;
+	color: #ececea;
+}
+#input
+{
+	border-radius: 10px;
+	width: 80%;
+	height: 100px;
+	padding: 10px;
+}
+
+#input2
+{
+	margin-bottom: 2%;
+	border-radius: 10px;
+	width: 80%;
+	padding: 10px;
+}
+
+.c3 svg
+{
+	font: 20px sans-serif;
+}
+
+.c3 .c3-legend-item
+{
+	font: 20px sans-serif;
+}
+
+
+.c3 .c3-axis-x path, .c3 .c3-axis-x line
+{
+	stroke: #d9853b;
+	stroke-width: 2px;
+}
+
+.c3 .c3-axis-y path, .c3 .c3-axis-y line
+{
+	stroke: #d9853b;
+	stroke-width: 2px;
+
+}
+
+#query
+{
+	float: center;
+	text-align: center;
+	background-color: #74afad;
+	color: black;
+}
+
+#send
+{
+	color: #ececea;
+	font-weight: bold;
+	font-size: 30px;
+	height: 10%;
+	width: 20%;
+	background-color: #d9853b;
+}
+
+#graphset
+{
+	text-align: center;
+	width: 100%;
+	padding: 1px;
+}
+
+
+#chart1
+{
+	margin-bottom: 5%;
+	padding: 10% 0%;
+	float: left;
+	display: inline;
+	width: 45%;
+}
+
+#chart4
+{
+	margin-bottom: 5%;
+	padding: 10% 0%;
+	float: right;
+	display: inline;
+	width: 55%;
+}
+
+
+#chart2
+{
+	margin-top: 5%;
+	padding: 10% 0%;
+	float: left;
+	display: inline;
+	width: 45%;
+}
+
+#chart3
+{
+	margin-top: 5%;
+	padding: 10% 0%;
+	float: right;
+	display: inline;
+	width: 45%;
+}
+
+body 
+{ 
+	font-family: 'Slabo 27px', serif;
+	background-color: #e0ffff;
+    padding-top: 20px; 
+	padding-bottom: 20px; 
+}
+
+

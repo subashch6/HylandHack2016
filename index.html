@@ -1,0 +1,158 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Hyland Hackathon</title>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+	<script src="/socket.io/socket.io.js"></script> 
+	<script src="externaljs.js"></script>
+  </head>
+  <style>
+	#messages
+	{ text-align: center;
+		top: 50%;
+		left: 50%;
+		padding: 50px;
+	}
+
+	#input
+	{
+		width: 50%;
+		padding: 10px;
+	}
+	.graphs
+	{
+		width: 50%;
+		left: 25%;
+		padding: 0px;
+	}
+  </style>
+  <body>
+	<div id="messages">
+      <input id="input" autocomplete="off" />
+	  <input id="send" type="button"  value="Query!"/> 
+	</div>
+	<div id="chart1" class="graphs"></div>
+	<div id="chart2" class="graphs"></div>
+	<div id="chart3" class="graphs"></div>
+
+	<script>
+
+	var socket = io();
+    	
+	var chart1 = c3.generate({
+				bindto: '#chart1',
+				data: {
+					columns: [[]],
+					type: 'bar'
+					},
+				axis: {
+					x: {
+						type: 'category',
+						categories: ['Libertarian','Green','Liberal','Conservative']
+					}
+				}
+		});
+
+	var chart2 = c3.generate({
+				bindto: '#chart2',
+				data: {
+					columns: [[]],
+					type: 'bar'
+					},
+				axis: {
+					x: {
+						type: 'category',
+						categories: ['Extraversion','Openness','Agreeableness','Conscientiousness']
+					}
+				}
+		});
+
+	var donut = c3.generate({
+		bindto: '#chart3',
+			data: {
+				columns: [[]],
+				type: 'donut'
+			}
+		});
+
+
+
+	$('#send').click(function()
+			{
+				chart1.unload();
+				chart2.unload();
+				donut.unload();
+				sendQueryEmit();
+			});
+
+
+	$('#input').keypress(function(e)
+				   {
+				   		if(e.keyCode == 13)
+						{
+							chart1.unload();
+							chart2.unload();
+							donut.unload();
+							sendQueryEmit();
+						}
+				   });
+
+	var polValues = null;
+	var perValues = null;
+	var emoValues = null;
+
+	socket.on('QueryReceived', function(ret) {
+		
+		alert(JSON.stringify(ret));
+		setAggregate(ret);
+		
+		polValues = processPolitical();
+		perValues = processPersonality();
+		emoValues = processEmotion();
+		setTimeout(function(){
+			chart1.load({columns : [polValues[0]]});
+		},500);
+
+		setTimeout(function(){
+			chart1.load({columns : [polValues[1]]});
+		},1000);
+		
+		setTimeout(function(){
+			chart2.load({columns : [perValues[0]]});
+		},1500);
+		
+		setTimeout(function(){
+			chart2.load({columns : [perValues[1]]});
+		},2000);
+
+		setTimeout(function(){
+			donut.load({columns : [emoValues[0]]});
+		},500);
+
+		setTimeout(function(){
+			donut.load({columns : [emoValues[1]]});
+		},1000 );
+
+		setTimeout(function(){
+			donut.load({columns : [emoValues[2]]});
+		},1500 );
+
+		setTimeout(function(){
+			donut.load({columns : [emoValues[3]]});
+		},2000 );
+
+		setTimeout(function(){
+			donut.load({columns : [emoValues[4]]});
+		},2500 );
+
+	});
+		
+
+	</script>
+
+	</body>
+</html>
+
